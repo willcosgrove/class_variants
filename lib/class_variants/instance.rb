@@ -25,18 +25,18 @@ module ClassVariants
 
         # Then merge the passed in overrides on top of the defaults
         render_options.each do |variant_type, variant|
-            # dig the class definitions out
-            case @variants.dig(variant_type, variant)
-            in String => classes
-              # If they're a string of classes, append them to the result
-              result << classes
-            in ClassVariants::Instance => compound_variants
-              # If they're another class variants instance, render them and append
-              result << compound_variants.render(**render_options)
-            else
-              # No-op
-            end
+          # dig the class definitions out
+          case @variants.dig(variant_type, variant)
+          in String => classes
+            # If they're a string of classes, append them to the result
+            result << classes
+          in ClassVariants::Instance => compound_variants
+            # If they're another class variants instance, render them and append
+            result << compound_variants.render(**render_options)
+          else
+            # No-op
           end
+        end
 
         @opt_cache[render_options] = result.join(" ").squeeze(" ").strip
       end
@@ -96,7 +96,6 @@ module ClassVariants
 
     def build_variant_keys
       keys = Set[]
-      puts @variants
       @variants.each do |key, value|
         keys << key
         value.values.each do |variant_option_value|
